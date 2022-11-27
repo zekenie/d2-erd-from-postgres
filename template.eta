@@ -1,0 +1,16 @@
+<% it.schema.forEach(function(table) { %>
+
+<%= table.table_name %>: {
+  shape: sql_table
+  <% table.columns.forEach(function(column) { %>
+  <%= column.column_name %>: <%= column.data_type %> <% if (column.is_fk) { %>{constraint: foreign_key}<% } %> <% if (column.column_name === table.primary_key) { %>{constraint: primary_key}<% } %> 
+
+  <% }) %>
+}
+
+<% table.foreign_relations.forEach(function(fk) { %>
+<%= fk.table_name %>.<%= fk.column_name %> -> <%= fk.foreign_table_name %>.<%= fk.foreign_column_name %>
+
+<% }) %>
+
+<% }) %>
